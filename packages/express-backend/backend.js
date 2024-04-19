@@ -1,9 +1,13 @@
 import express from "express";
+import cors from "cors";
 
 const app = express();
 const port = 8000;
 
+app.use(cors());
+
 app.use(express.json());
+
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -82,8 +86,10 @@ app.get("/users", (req, res) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  addUser(userToAdd);
-  res.send();
+  const randId = Math.floor(Math.random() * 1000) + 1;
+  const user = {id:randId, ...userToAdd};
+  addUser(user);
+  res.status(201).json(user);
 });
 
 
@@ -105,7 +111,7 @@ app.delete("/users/:id", (req, res) => {
     res.status(404).send("Resource not found.");
   } else {
     deleteUser(result);
-    res.send(result);
+    res.status(204).send();
   }
 });
 
