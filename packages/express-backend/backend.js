@@ -59,7 +59,7 @@ const addUser = (user) => {
 };
 
 const deleteUser = (user) => {
-  users["users_list"].pop(user);
+  users["users_list"].splice(findUserById(user.id), 1);
   return user;
 };
 
