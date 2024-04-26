@@ -49,7 +49,7 @@ function MyApp() {
       .then(() => setCharacters([...characters, person]))
       .catch((error) => {
         console.log(error);
-      })
+    })
   }
 
   function fetchUsers() {
