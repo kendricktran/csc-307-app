@@ -12,15 +12,28 @@ db.once('open', function() {
 });
 
 function getUsers(name, job) {
-  let promise;
-  if (name === undefined && job === undefined) {
-    promise = userModel.find();
-  } else if (name && !job) {
-    promise = findUserByName(name);
-  } else if (job && !name) {
-    promise = findUserByJob(job);
+  let query = {};
+
+  // If both name and job are provided, construct the query object with both conditions
+  if (name && job) {
+    query = { name: name, job: job };
   }
-  return promise;
+  // If only name is provided, add name condition to the query
+  else if (name) {
+    query = { name: name };
+  }
+  // If only job is provided, add job condition to the query
+  else if (job) {
+    query = { job: job };
+  }
+
+  try {
+    // Use the find method with the constructed query to fetch users
+    const users = userModel.find(query);
+    return users;
+  } catch (error) {
+    throw error;
+  }
 }
 
 function findUserById(id) {
@@ -41,10 +54,16 @@ function findUserByJob(job) {
   return userModel.find({ job: job });
 }
 
+function deleteUser(_id) {
+  return userModel.findByIdAndDelete(_id);
+}
+
+
 export default {
   addUser,
   getUsers,
   findUserById,
   findUserByName,
   findUserByJob,
+  deleteUser,
 };

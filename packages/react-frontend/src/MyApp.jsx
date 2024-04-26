@@ -16,14 +16,13 @@ function MyApp() {
 
   function removeOneCharacter(index){
     deleteUser(index)
-      .then(() => setCharacters([...updated]))
       .catch((error) => {
         console.log(error);
       })
   }
 
   function deleteUser (index) {
-    return fetch(`http://localhost:8000/users/${characters[index].id}`, {
+    return fetch(`http://localhost:8000/users/${characters[index]._id}`, {
       method: "DELETE"
     })
     .then(response => {
@@ -46,7 +45,7 @@ function MyApp() {
 
   function updateList(person) { 
     postUser(person)
-      .then(() => setCharacters([...characters, person]))
+      .then((response) => { setCharacters([...characters, response])})
       .catch((error) => {
         console.log(error);
     })
